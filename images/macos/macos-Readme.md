@@ -2,59 +2,63 @@
 
 The following software is installed on machines in the Azure Pipelines **macOS-10.13** VM image ('Hosted macOS Preview' pool).
 
+## Upcoming Image Changes
+
+We will be switching to use [Azul OpenJDKs](https://azure.microsoft.com/en-us/blog/microsoft-and-azul-systems-bring-free-java-lts-support-to-azure/) in April 2019. We will support Azul OpenJDKs 7, 8, and 11 and will be deprecating support for Java 9 and 10.
+
 ## Operating System
 
-- OS X 10.13.6 (17G65) **High Sierra**
+- OS X 10.13.6 (17G5019) **High Sierra**
 
 ## Installed Software
 
 ### Language and Runtime
 
 - Java 1.7.0_80
-- Java 1.8.0_192
+- Java 1.8.0_202
 - Java 9.0.4
 - Java 10.0.2
-- Java 11.0.1
-- Node.js 6.14.4
+- Java 11.0.2
+- Node.js 6.17.0
 - Node.js 8.11.3
 - NVM 0.33.11
-- PowerShell 6.1.0
-- Python 2.7.10
-- Python 3.7.0
-- Ruby 2.5.3p105
-- .NET Core SDK 1.0.1, 1.0.4, 1.1.4, 1.1.5, 1.1.7, 1.1.8, 1.1.9, 1.1.10, 1.1.11, 2.0.0, 2.0.3, 2.1.100, 2.1.101, 2.1.102, 2.1.103, 2.1.104, 2.1.105, 2.1.2, 2.1.200, 2.1.201, 2.1.300, 2.1.301, 2.1.4, 2.1.400, 2.1.401 2.1.402
-- Go 1.11
+- PowerShell 6.1.3
+- Python 2.7.16
+- Python 3.7.2
+- Ruby 2.6.2p47
+- .NET Core SDK 1.0.1, 1.0.4, 1.1.4, 1.1.5, 1.1.7, 1.1.8, 1.1.9, 1.1.10, 1.1.11, 1.1.12, 1.1.13, 2.0.0, 2.0.3, 2.1.100, 2.1.101, 2.1.102, 2.1.103, 2.1.104, 2.1.105, 2.1.503, 2.1.504, 2.1.505, 2.1.2, 2.1.200, 2.1.201, 2.1.300, 2.1.301, 2.1.4, 2.1.400, 2.1.401 2.1.402 2.1.502, 2.1.504, 2.2.101, 2.2.102, 2.2.103, 2.2.104, 2.2.105
+- Go 1.12.1
 
 ### Package Management
 
-- Bundler 1.16.1
-- Carthage 0.31.1
-- CocoaPods 1.5.3
-- Homebrew 1.8.0
+- Bundler 2.0.1
+- Carthage 0.32.0
+- **CocoaPods 1.6.1** (Please, pay attention here. You may face an issue with pod install due to old dependencies in your pod file. In that case, you need to update your pod file with newer dependencies or rollback to CocoaPods 1.5.3 using this [post-clone script](https://github.com/Microsoft/appcenter-build-scripts-examples/tree/master/general/cocoapods-rollback))
+- Homebrew 2.0.5
 - NPM 3.10.10
-- Yarn 1.10.1
+- Yarn 1.15.2
 - NuGet 4.7.0.5148
-- pip 18.0
+- pip 19.0.2
 - Miniconda 4.5.11
 
 ### Project Management
 
-- Apache Maven 3.5.4
-- Gradle 4.10.2
+- Apache Maven 3.6.0
+- Gradle 5.2.1
 
 ### Utilities
 
-- curl 7.54.0 (libcurl/7.54.0 LibreSSL/2.0.20 zlib/1.2.11 nghttp2/1.24.0)
-- Git 2.19.1
-- Git LFS 2.5.2
-- GNU Wget 1.19.5
-- Subversion (SVN) 1.10.2
+- curl 7.63.0 (libcurl/7.54.0 LibreSSL/2.0.20 zlib/1.2.11 nghttp2/1.24.0)
+- Git 2.21.0
+- Git LFS 2.7.1
+- GNU Wget 1.20.1
+- Subversion (SVN) 1.11.1
 
 ### Tools
 
-- fastlane 2.107.0
-- App Center CLI 1.1.5
-- Azure-CLI 2.0.49
+- fastlane 2.118.1
+- App Center CLI 1.1.13
+- Azure-CLI 2.0.60
 
 ### Pre-cached tools
 - Python 2.7.15 3.4.8 3.5.5 3.6.5 3.7.0
@@ -62,7 +66,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 ### Xcode
 | Version                | Build   | Path                          |
 |------------------------|---------|-------------------------------|
-| 10.1 beta 3            | 10O45e  | /Applications/Xcode_10.3.app  |
+| 10.1                   | 10B61   | /Applications/Xcode_10.1.app  |
 | 10.0                   | 10A255  | /Applications/Xcode_10.app    |
 | 9.4.1                  | 9F2000  | /Applications/Xcode_9.4.1.app |
 | 9.4                    | 9F1027a | /Applications/Xcode_9.4.app   |
@@ -73,16 +77,10 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | 9.0.1                  | 9A1004  | /Applications/Xcode_9.0.1.app |
 | 9.0                    | 9A235   | /Applications/Xcode_9.app     |
 | 8.3.3                  | 8E3004b | /Applications/Xcode_8.3.3.app |
-| 8.3.2                  | 8E2002  | /Applications/Xcode_8.3.2.app |
-| 8.3.1                  | 8E1000a | /Applications/Xcode_8.3.1.app |
-| 8.2.1                  | 8C1002  | /Applications/Xcode_8.2.1.app |
-| 8.2                    | 8C38    | /Applications/Xcode_8.2.app   |
-| 8.1                    | 8B62    | /Applications/Xcode_8.1.app   |
-| 8.0                    | 8A218a  | /Applications/Xcode_8.app     |
 
 ### Xcode Support Tools
 
-- Nomad CLI 2.7.7
+- Nomad CLI 3.0.3
 - Nomad CLI IPA 0.14.3
 - xcpretty 0.3.0
 - xctool 0.3.5
@@ -93,9 +91,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | macOS 10.12               | macosx10.12 |
 | macOS 10.13               | macosx10.13 |
 | macOS 10.14               | macosx10.14 |
-| iOS 10.0                  | iphoneos10.0 |
-| iOS 10.1                  | iphoneos10.1 |
-| iOS 10.2                  | iphoneos10.2 |
 | iOS 10.3                  | iphoneos10.3 |
 | iOS 11.0                  | iphoneos11.0 |
 | iOS 11.1                  | iphoneos11.1 |
@@ -104,9 +99,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | iOS 11.4                  | iphoneos11.4 |
 | iOS 12.0                  | iphoneos12.0 |
 | iOS 12.1                  | iphoneos12.1 |
-| iOS Simulator 10.0        | iphonesimulator10.0 |
-| iOS Simulator 10.1        | iphonesimulator10.1 |
-| iOS Simulator 10.2        | iphonesimulator10.2 |
 | iOS Simulator 10.3        | iphonesimulator10.3 |
 | iOS Simulator 11.0        | iphonesimulator11.0 |
 | iOS Simulator 11.1        | iphonesimulator11.1 |
@@ -115,8 +107,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | iOS Simulator 11.4        | iphonesimulator11.4 |
 | iOS Simulator 12.0        | iphonesimulator12.0 |
 | iOS Simulator 12.1        | iphonesimulator12.1 |
-| tvOS 10.0                 | appletvos10.0 |
-| tvOS 10.1                 | appletvos10.1 |
 | tvOS 10.2                 | appletvos10.2 |
 | tvOS 11.0                 | appletvos11.0 |
 | tvOS 11.1                 | appletvos11.1 |
@@ -125,8 +115,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | tvOS 11.4                 | appletvos11.4 |
 | tvOS 12.0                 | appletvos12.0 |
 | tvOS 12.1                 | appletvos12.1 |
-| tvOS Simulator 10.0       | appletvsimulator10.0 |
-| tvOS Simulator 10.1       | appletvsimulator10.1 |
 | tvOS Simulator 10.2       | appletvsimulator10.2 |
 | tvOS Simulator 11.0       | appletvsimulator11.0 |
 | tvOS Simulator 11.1       | appletvsimulator11.1 |
@@ -135,8 +123,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | tvOS Simulator 11.4       | appletvsimulator11.4 |
 | tvOS Simulator 12.0       | appletvsimulator12.0 |
 | tvOS Simulator 12.1       | appletvsimulator12.1 |
-| watchOS 3.0               | watchos3.0 |
-| watchOS 3.1               | watchos3.1 |
 | watchOS 3.2               | watchos3.2 |
 | watchOS 4.0               | watchos4.0 |
 | watchOS 4.1               | watchos4.1 |
@@ -144,8 +130,6 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | watchOS 4.3               | watchos4.3 |
 | watchOS 5.0               | watchos5.0 |
 | watchOS 5.1               | watchos5.1 |
-| watchOS Simulator 3.0     | watchsimulator3.0 |
-| watchOS Simulator 3.1     | watchsimulator3.1 |
 | watchOS Simulator 3.2     | watchsimulator3.2 |
 | watchOS Simulator 4.0     | watchsimulator4.0 |
 | watchOS Simulator 4.1     | watchsimulator4.1 |
@@ -180,11 +164,12 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPad Air 2
 - iPad (5th generation)
 - iPad Pro (9.7-inch)
+- iPad Pro (10.5-inch)
+- iPad Pro (11-inch)
 - iPad Pro (12.9-inch)
 - iPad Pro (12.9-inch) (2nd generation)
-- iPad Pro (10.5-inch)
 - iPad (6th generation)
-- Apple TV
+- Apple TV 1080p
 - Apple TV 4K
 - Apple TV 4K (at 1080p)
 - Apple Watch - 38mm
@@ -213,22 +198,21 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | iOS 11.3 | 15E217 |
 | iOS 11.4 | 15F79 |
 | iOS 12.0 | 16A5288q |
-| tvOS 10.0 | 14T328 |
-| tvOS 10.1 | 14U591 |
+| iOS 12.1 | 16B91 |
 | tvOS 10.2 | 14W260 |
 | tvOS 11.1 | 15J580 |
 | tvOS 11.2 | 15K104 |
 | tvOS 11.3 | 15L211 |
 | tvOS 11.4 | 15L576 |
 | tvOS 12.0 | 16J5283n |
-| watchOS 3.0 | 14S326 |
-| watchOS 3.1 | 14S471a |
+| tvOS 12.1 | 16J602 |
 | watchOS 3.2 | 14V243 |
 | watchOS 4.0 | 15R372 |
 | watchOS 4.1 | 15R844 |
 | watchOS 4.2 | 15S100 |
 | watchOS 4.3 | 15T212 |
 | watchOS 5.0 | 16R5283q |
+| watchOS 5.1 | 16R591 |
 
 #### Devices
 
@@ -238,7 +222,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPhone 5
 - iPhone 5s
 - iPhone 6
-- iPhone 6
+- iPhone 6 Plus
 - iPad 2
 - iPad Retina
 - iPad Air
@@ -272,7 +256,21 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPad Air 2
 - iPad Pro
 
-#### iOS 10.0, 10.1, 10.2, 10.3
+#### iOS 10.0
+
+- iPhone 5
+- iPhone 5s
+- iPhone 6
+- iPhone 6 Plus
+- iPhone 6s
+- iPhone 6s Plus
+- iPhone SE
+- iPad Air
+- iPad Air 2
+- iPad Pro (9.7 inch)
+- iPad Pro (12.9 inch)
+
+#### iOS 10.1, 10.2, 10.3
 
 - iPhone 5
 - iPhone 5s
@@ -288,7 +286,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPad Pro (9.7 inch)
 - iPad Pro (12.9 inch)
 
-#### iOS 11, 11.1, 11.2, 11.3, 11.4
+#### iOS 11.0, 11.1, 11.2, 11.3, 11.4
 
 - iPhone 5s
 - iPhone 6
@@ -309,7 +307,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPad Pro (12.9-inch) (2nd generation)
 - iPad Pro (10.5-inch)
 
-#### iOS 12
+#### iOS 12.0
 
 - iPhone 5s
 - iPhone 6
@@ -322,6 +320,36 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPhone 8
 - iPhone 8 Plus
 - iPhone X
+- iPhone XR
+- iPhone XS
+- iPhone XS Max
+- iPad Air
+- iPad Air 2
+- iPad (5th generation)
+- iPad Pro (9.7-inch)
+- iPad Pro (10.5-inch)
+- iPad Pro (11-inch)
+- iPad Pro (12.9-inch)
+- iPad Pro (12.9-inch) (2nd generation)
+- iPad (6th generation)
+
+#### iOS 12.1
+
+- iPhone 5s
+- iPhone 6
+- iPhone 6 Plus
+- iPhone 6s
+- iPhone 6s Plus
+- iPhone 7
+- iPhone 7 Plus
+- iPhone SE
+- iPhone 8
+- iPhone 8 Plus
+- iPhone X
+- iPhone X
+- iPhone XS
+- iPhone XS Max
+- iPhone XR
 - iPad Air
 - iPad Air 2
 - iPad (5th generation)
@@ -330,25 +358,27 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - iPad Pro (12.9-inch) (2nd generation)
 - iPad Pro (10.5-inch)
 - iPad (6th generation)
+- iPad Pro (11-inch)
+- iPad Pro (12.9-inch) (3rd generation)
 
-#### tvOS 10, 10.1, 10.2
+#### tvOS 10.2
 
 - Apple TV 1080p
 
-#### tvOS 11, 11.1, 11.2, 11.3, 11.4, 12
+#### tvOS 11.0, 11.1, 11.2, 11.3, 11.4, 12, 12.1
 
 - Apple TV
 - Apple TV 4K
 - Apple TV 4K (at 1080p)
 
-#### watchOS 3.0, 3.1, 3.2
+#### watchOS 3.2
 
 - Apple Watch - 38mm
 - Apple Watch - 42mm
 - Apple Watch Series 2 - 38mm
 - Apple Watch Series 2 - 42mm
 
-#### watchOS 4.0, 4.1, 4.2, 4.3, 5.0
+#### watchOS 4.0, 4.1, 4.2, 4.3
 
 - Apple Watch - 38mm
 - Apple Watch - 42mm
@@ -356,6 +386,15 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - Apple Watch Series 2 - 42mm
 - Apple Watch Series 3 - 38mm
 - Apple Watch Series 3 - 42mm
+
+#### watchOS 5.0, 5.1
+
+- Apple Watch Series 2 - 38mm
+- Apple Watch Series 2 - 42mm
+- Apple Watch Series 3 - 38mm
+- Apple Watch Series 3 - 42mm
+- Apple Watch Series 4 - 40mm
+- Apple Watch Series 4 - 44mm
 
 ### Device Pairs
 
@@ -382,7 +421,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 
 | Package name          | Description                                 |
 |-----------------------|---------------------------------------------|
-| platform-tools        | Android SDK Platform-tools, revision 28.0.1 |
+| platform-tools        | Android SDK Platform-tools, revision 28.0.2 |
 
 ### Android SDK Platforms
 
@@ -424,6 +463,7 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 | build-tools-26.0.0    | Android SDK Build-tools, Revision 26.0.0  |
 | build-tools-26.0.1    | Android SDK Build-tools, Revision 26.0.1  |
 | build-tools-26.0.2    | Android SDK Build-tools, Revision 26.0.2  |
+| build-tools-26.0.3    | Android SDK Build-tools, Revision 26.0.3  |
 | build-tools-27.0.0    | Android SDK Build-tools, Revision 27.0.0  |
 | build-tools-27.0.1    | Android SDK Build-tools, Revision 27.0.1  |
 | build-tools-27.0.2    | Android SDK Build-tools, Revision 27.0.2  |
@@ -439,9 +479,9 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 |-----------------------|-------------------------------------------|
 | cmake                 | 3.6.4111459                               |
 | lldb                  | 2.3.3614996                               |
-| ndk-bundle            | 18.0.5002713                              |
+| ndk-bundle            | 18.1.5063045                              |
 | ProGuard              | 5.3.3                                     |
-| Android Emulator      | 27.2.9                                    |
+| Android Emulator      | 28.0.23                                    |
 
 ### Google APIs
 
@@ -465,10 +505,11 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 
 ### Visual Studio for Mac
 
-- 7.6.6.17
+- 7.8.3.2
 
 ### Mono
 
+- 5.16.0
 - 5.12.0
 - 5.10.1
 - 5.8.1
@@ -481,8 +522,9 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 
 ### Xamarin.iOS SDK
 
+- 12.2.1.15
+- 12.2.1.11
 - 12.0.0.15
-- 12.0.0.10
 - 11.14.0.13
 - 11.12.0.4
 - 11.9.1.24
@@ -493,8 +535,10 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 - 10.10.0.36
 - 10.6.0.10
 
+
 ### Xamarin.Android SDK
 
+- 9.1.8.0
 - 9.0.0-20
 - 9.0.0-18
 - 8.3.3-2
@@ -508,7 +552,9 @@ The following software is installed on machines in the Azure Pipelines **macOS-1
 
 ### Xamarin.Mac SDK
 
-- 4.99.3.740
+- 5.3.1.28
+- 5.2.1.15
+- 5.2.1.9
 - 4.6.0.13
 - 4.4.1.193
 - 4.2.1.28

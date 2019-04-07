@@ -17,6 +17,16 @@ Function InstallVS
 
   try
   {
+    Write-Host "Enable short name support on Windows needed for Xamarin Android AOT, defaults appear to have been changed in Azure VMs"
+    $shortNameEnableProcess = Start-Process -FilePath fsutil.exe -ArgumentList ('8dot3name', 'set', '0') -Wait -PassThru
+    $shortNameEnableExitCode = $shortNameEnableProcess.ExitCode
+
+    if ($shortNameEnableExitCode -ne 0)
+    {
+      Write-Host -Object 'Enabling short name support on Windows failed. This needs to be enabled prior to VS 2017 install for Xamarin Andriod AOT to work.'
+      exit $shortNameEnableExitCode
+    }
+
     Write-Host "Downloading Bootstrapper ..."
     Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_$Sku.exe"
 
@@ -82,6 +92,7 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Microsoft.VisualStudio.Web.Mvc4.ComponentGroup ' + `
                 '--add Component.CPython2.x64 ' + `
                 '--add Microsoft.Component.PythonTools.UWP ' + `
+                '--remove Component.CPython3.x64 ' + `
                 '--add Microsoft.Component.VC.Runtime.OSSupport ' + `
                 '--add Microsoft.VisualStudio.Component.VC.Tools.ARM ' + `
                 '--add Microsoft.VisualStudio.ComponentGroup.UWP.VC ' + `
@@ -100,7 +111,15 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Win81 ' + `
                 '--add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.WinXP ' + `
                 '--add Microsoft.VisualStudio.ComponentGroup.ArchitectureTools.Managed ' + `
-                '--add Microsoft.Component.Blend.SDK.WPF'
+                '--add Microsoft.Component.Blend.SDK.WPF ' + `
+                '--add Microsoft.Component.VC.Runtime.UCRTSDK ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATL.Spectre ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre ' + `
+                '--add Microsoft.VisualStudio.Component.Windows10SDK.17134 ' + `
+                '--add Microsoft.VisualStudio.Component.Windows10SDK.17763 ' + `
+                '--add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre '+ `
+                '--add Microsoft.VisualStudio.Component.VC.Runtimes.ARM.Spectre ' + `
+                '--add Microsoft.VisualStudio.Component.VC.Runtimes.ARM64.Spectre '
 
 $Sku = 'Enterprise'
 $VSBootstrapperURL = 'https://aka.ms/vs/15/release/vs_enterprise.exe'
