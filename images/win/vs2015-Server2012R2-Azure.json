@@ -9,6 +9,10 @@
         "storage_account": "{{env `ARM_STORAGE_ACCOUNT`}}",
         "location": "{{env `ARM_RESOURCE_LOCATION`}}",
         "ssh_password": "{{env `SSH_PASSWORD`}}",
+        "virtual_network_name": "{{env `VNET_NAME`}}",
+        "virtual_network_resource_group_name": "{{env `VNET_RESOURCE_GROUP`}}",
+        "virtual_network_subnet_name": "{{env `VNET_SUBNET`}}",
+        "private_virtual_network_with_public_ip": "{{env `PRIVATE_VIRTUAL_NETWORK_WITH_PUBLIC_IP`}}",
         "vm_size": "Standard_DS4_v2",
 
         "image_folder": "C:\\image",
@@ -35,6 +39,10 @@
             "storage_account": "{{user `storage_account`}}",
             "capture_container_name": "images",
             "capture_name_prefix": "packer",
+            "virtual_network_name": "{{user `virtual_network_name`}}",
+            "virtual_network_resource_group_name": "{{user `virtual_network_resource_group_name`}}",
+            "virtual_network_subnet_name": "{{user `virtual_network_subnet_name`}}",
+            "private_virtual_network_with_public_ip": "{{user `private_virtual_network_with_public_ip`}}",
             "os_type": "Windows",
             "image_publisher": "MicrosoftWindowsServer",
             "image_offer": "WindowsServer",
@@ -225,8 +233,8 @@
         {
             "type": "powershell",
             "environment_vars": [
-                "GO_VERSIONS=1.12.1",
-                "GO_DEFAULT=1.12.1"
+                "GO_VERSIONS=1.12.4",
+                "GO_DEFAULT=1.12.4"
             ],
             "scripts":[
                 "{{ template_dir }}/scripts/Installers/Install-Go.ps1"
@@ -351,8 +359,8 @@
         {
             "type": "powershell",
             "environment_vars": [
-                "GO_VERSIONS=1.12.1",
-                "GO_DEFAULT=1.12.1"
+                "GO_VERSIONS=1.12.4",
+                "GO_DEFAULT=1.12.4"
             ],
             "scripts":[
                 "{{ template_dir }}/scripts/Installers/Validate-Go.ps1"

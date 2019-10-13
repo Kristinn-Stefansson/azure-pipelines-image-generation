@@ -8,7 +8,7 @@
 source $HELPER_SCRIPTS/apt.sh
 source $HELPER_SCRIPTS/document.sh
 
-LATEST_DOTNET_PACKAGE=dotnet-sdk-2.1
+LATEST_DOTNET_PACKAGE=dotnet-sdk-3.0
 
 LSB_RELEASE=$(lsb_release -rs)
 
@@ -34,32 +34,37 @@ set -e
 echo "Determing if .NET Core ($LATEST_DOTNET_PACKAGE) is installed"
 if ! IsInstalled $LATEST_DOTNET_PACKAGE; then
     echo "Could not find .NET Core ($LATEST_DOTNET_PACKAGE), installing..."
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-bionic-prod bionic main" > /etc/apt/sources.list.d/dotnetdev.list'
+    apt-get install apt-transport-https
+    apt-get update
     apt-get install $LATEST_DOTNET_PACKAGE -y
 else
     echo ".NET Core ($LATEST_DOTNET_PACKAGE) is already installed"
 fi
 
-# Get list of all released SDKs
-release_url="https://raw.githubusercontent.com/dotnet/core/master/release-notes/releases.json"
-releases=$(curl "${release_url}")
-sdks=$(echo "${releases}" | grep version-sdk | grep -v preview | grep -v rc | grep -v display | cut -d\" -f4 | sort -u)
-for sdk in $sdks; do
-    # Glob matches dotnet-dev-1.x or dotnet-sdk-2.y
-    if ! apt-get install -y --no-install-recommends "dotnet-*-$sdk"; then
-        # Install manually if not in package repo
-        if [[ "$sdk" =~ ^1.*$ ]]; then
-            url="https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$sdk/dotnet-dev-ubuntu.16.04-x64.$sdk.tar.gz"
-        else
-            url="https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$sdk/dotnet-sdk-$sdk-linux-x64.tar.gz"
-        fi
-        echo "$url" >> urls
-        echo "Adding $url to list to download later"
-    fi
+# Get list of all released SDKs from channels which are not end-of-life or preview
+release_urls=("https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/2.1/releases.json" "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/2.2/releases.json")
+sdks=()
+for release_url in ${release_urls[@]}; do
+    echo "${release_url}"
+    releases=$(curl "${release_url}")
+    sdks=("${sdks[@]}" $(echo "${releases}" | jq '.releases[]' | jq '.sdk.version'))
+    sdks=("${sdks[@]}" $(echo "${releases}" | jq '.releases[]' | jq '.sdks[]?' | jq '.version'))
+done
+
+sortedSdks=$(echo ${sdks[@]} | tr ' ' '\n' | grep -v preview | grep -v rc | grep -v display | cut -d\" -f2 | sort -u -r)
+
+for sdk in $sortedSdks; do
+    url="https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$sdk/dotnet-sdk-$sdk-linux-x64.tar.gz"
+    echo "$url" >> urls
+    echo "Adding $url to list to download later"
 done
 
 # Download additional SDKs
 echo "Downloading release tarballs..."
-sort -u urls | xargs -n 1 -P 16 wget -q
+cat urls | xargs -n 1 -P 16 wget -q
 for tarball in *.tar.gz; do
     dest="./tmp-$(basename -s .tar.gz $tarball)"
     echo "Extracting $tarball to $dest"
@@ -72,20 +77,19 @@ for tarball in *.tar.gz; do
 done
 rm urls
 
+DocumentInstalledItem ".NET Core SDK:"
 # Smoke test each SDK
-for sdk in $sdks; do
+for sdk in $sortedSdks; do
     mksamples "$sdk" "console"
     mksamples "$sdk" "mstest"
     mksamples "$sdk" "xunit"
     mksamples "$sdk" "web"
     mksamples "$sdk" "mvc"
     mksamples "$sdk" "webapi"
-    DocumentInstalledItem ".NET Core SDK $sdk"
+    DocumentInstalledItemIndent "$sdk"
 done
 
 # NuGetFallbackFolder at /usr/share/dotnet/sdk/NuGetFallbackFolder is warmed up by smoke test
 # Additional FTE will just copy to ~/.dotnet/NuGet which provides no benefit on a fungible machine
 echo "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1" | tee -a /etc/environment
-echo "PATH=\"/home/vsts/.dotnet/tools:$PATH\"" | tee -a /etc/environment
-
-dotnet --info
+echo "PATH=\"\$HOME/.dotnet/tools:\$PATH\"" | tee -a /etc/skel/.profile

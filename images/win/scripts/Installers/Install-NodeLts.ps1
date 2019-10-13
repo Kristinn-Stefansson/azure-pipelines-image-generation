@@ -25,7 +25,6 @@ setx NPM_CONFIG_CACHE $CachePath /M
 $env:NPM_CONFIG_CACHE = $CachePath
 
 npm config set registry http://registry.npmjs.org/
-npm install -g npm
 
 npm install -g bower
 npm install -g cordova

@@ -70,6 +70,7 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Microsoft.Net.Component.4.7.1.SDK ' + `
                 '--add Microsoft.Net.Component.4.7.1.TargetingPack ' + `
                 '--add Microsoft.Net.ComponentGroup.4.7.1.DeveloperTools ' + `
+                '--add Microsoft.Net.ComponentGroup.4.7.2.DeveloperTools ' + `
                 '--add Microsoft.Net.Core.Component.SDK.1x ' + `
                 '--add Microsoft.NetCore.1x.ComponentGroup.Web ' + `
                 '--add Microsoft.VisualStudio.Component.Azure.Storage.AzCopy ' + `
@@ -77,6 +78,8 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Microsoft.VisualStudio.Component.VC.140 ' + `
                 '--add Component.Dotfuscator ' + `
                 '--add Microsoft.VisualStudio.Component.VC.ATL ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATL.ARM ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATL.ARM64 ' + `
                 '--add Microsoft.VisualStudio.Component.VC.ATLMFC ' + `
                 '--add Microsoft.VisualStudio.Component.VC.ClangC2 ' + `
                 '--add Microsoft.VisualStudio.Component.VC.CLI.Support ' + `
@@ -90,7 +93,7 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Component.Android.SDK23 ' + `
                 '--add Microsoft.VisualStudio.Component.TestTools.WebLoadTest ' + `
                 '--add Microsoft.VisualStudio.Web.Mvc4.ComponentGroup ' + `
-                '--add Component.CPython2.x64 ' + `
+                '--add Component.Linux.CMake ' + `
                 '--add Microsoft.Component.PythonTools.UWP ' + `
                 '--remove Component.CPython3.x64 ' + `
                 '--add Microsoft.Component.VC.Runtime.OSSupport ' + `
@@ -114,6 +117,8 @@ $WorkLoads = '--allWorkloads --includeRecommended ' + `
                 '--add Microsoft.Component.Blend.SDK.WPF ' + `
                 '--add Microsoft.Component.VC.Runtime.UCRTSDK ' + `
                 '--add Microsoft.VisualStudio.Component.VC.ATL.Spectre ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATL.ARM.Spectre ' + `
+                '--add Microsoft.VisualStudio.Component.VC.ATL.ARM64.Spectre ' + `
                 '--add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre ' + `
                 '--add Microsoft.VisualStudio.Component.Windows10SDK.17134 ' + `
                 '--add Microsoft.VisualStudio.Component.Windows10SDK.17763 ' + `
@@ -143,11 +148,15 @@ if($instanceFolders -is [array])
 $catalogContent = Get-Content -Path ($instanceFolders.FullName + '\catalog.json')
 $catalog = $catalogContent | ConvertFrom-Json
 $version = $catalog.info.id
+$VSInstallRoot = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
 Write-Host "Visual Studio version" $version "installed"
+
+# Initialize Visual Studio Experimental Instance for integration testing
+&"$VSInstallRoot\Common7\IDE\devenv.exe" /RootSuffix Exp /ResetSettings General.vssettings /Command File.Exit | Wait-Process
 
 # Updating content of MachineState.json file to disable autoupdate of VSIX extensions
 $newContent = '{"Extensions":[{"Key":"1e906ff5-9da8-4091-a299-5c253c55fdc9","Value":{"ShouldAutoUpdate":false}},{"Key":"Microsoft.VisualStudio.Web.AzureFunctions","Value":{"ShouldAutoUpdate":false}}],"ShouldAutoUpdate":false,"ShouldCheckForUpdates":false}'
-Set-Content -Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\Extensions\MachineState.json" -Value $newContent
+Set-Content -Path "$VSInstallRoot\Common7\IDE\Extensions\MachineState.json" -Value $newContent
 
 
 # Adding description of the software to Markdown
@@ -156,7 +165,7 @@ $SoftwareName = "Visual Studio 2017 Enterprise"
 
 $Description = @"
 _Version:_ $version<br/>
-_Location:_ C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise
+_Location:_ $VSInstallRoot
 
 The following workloads including required and recommended components are installed with Visual Studio 2017:
 

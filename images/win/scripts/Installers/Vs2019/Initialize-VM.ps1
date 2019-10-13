@@ -49,7 +49,7 @@ else {
 
 # Install .NET Framework 3.5 (required by Chocolatey)
 Install-WindowsFeature -Name NET-Framework-Features -IncludeAllSubFeature
-# Explicitly install all 4.7 sub features to include ASP.Net. 
+# Explicitly install all 4.7 sub features to include ASP.Net.
 # As of  1/16/2019, WinServer 19 lists .Net 4.7 as NET-Framework-45-Features
 Install-WindowsFeature -Name NET-Framework-45-Features -IncludeAllSubFeature
 
@@ -121,7 +121,7 @@ wmic logicaldisk get size,freespace,caption
 $Content = @"
 # Azure Pipelines Hosted Windows 2019 with VS2019 image
 
-The following software is installed on machines in the Azure Pipelines **Hosted Windows 2019 with VS2019** pool.
+The following software is installed on machines in the Azure Pipelines **Hosted Windows 2019 with VS2019** (v$env:ImageVersion) pool.
 
 Components marked with **\*** have been upgraded since the previous version of the image.
 

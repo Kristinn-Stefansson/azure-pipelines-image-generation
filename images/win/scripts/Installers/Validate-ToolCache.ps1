@@ -45,7 +45,7 @@ function ToolcacheTest {
                         }
                         else
                         {
-                            Write-Host "$SoftwareName($test)  $version ($arch) is not installed"
+                            Write-Host "$SoftwareName($test) $version ($arch) is not installed"
                             exit 1
                         }
                     }
@@ -77,6 +77,14 @@ $PythonNote += @"
 "@
 $PythonTests = @("python.exe", "Scripts\pip.exe")
 ToolcacheTest -SoftwareName "Python" -ExecTests $PythonTests -Note $PythonNote
+
+# PyPy test
+$PyPyNote += @"
+<br/>
+> Note: These versions of PyPy are available through the [Use Python Version](https://go.microsoft.com/fwlink/?linkid=871498) task.
+"@
+$PyPyTests = @("python.exe", "bin\pip.exe")
+ToolcacheTest -SoftwareName "PyPy" -ExecTests $PyPyTests -Note $PyPyNote
 
 # Ruby test
 $RubyNote += @"

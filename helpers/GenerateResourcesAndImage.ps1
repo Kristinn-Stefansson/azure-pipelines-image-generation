@@ -14,7 +14,7 @@ Function Get-PackerTemplatePath {
         [Parameter(Mandatory = $True)]
         [ImageType] $ImageType
     )
-    
+
     $relativePath = "N/A"
 
     switch ($ImageType) {
@@ -58,6 +58,9 @@ Function GenerateResourcesAndImage {
         .PARAMETER AzureLocation
             The location of the resources being created in Azure. For example "East US".
 
+        .PARAMETER Force
+            Delete the resource group if it exists without user confirmation.
+
         .EXAMPLE
             GenerateResourcesAndImage -SubscriptionId {YourSubscriptionId} -ResourceGroupName "shsamytest1" -ImageGenerationRepositoryRoot "C:\azure-pipelines-image-generation" -ImageType Ubuntu1604 -AzureLocation "East US"
     #>
@@ -71,9 +74,13 @@ Function GenerateResourcesAndImage {
         [Parameter(Mandatory = $True)]
         [ImageType] $ImageType,
         [Parameter(Mandatory = $True)]
-        [string] $AzureLocation
+        [string] $AzureLocation,
+        [Parameter(Mandatory = $False)]
+        [int] $SecondsToWaitForServicePrincipalSetup = 30,
+        [Parameter(Mandatory = $False)]
+        [Switch] $Force
     )
-    
+
     $builderScriptPath = Get-PackerTemplatePath -RepositoryRoot $ImageGenerationRepositoryRoot -ImageType $ImageType
     $ServicePrincipalClientSecret = $env:UserName + [System.GUID]::NewGuid().ToString().ToUpper();
     $InstallPassword = $env:UserName + [System.GUID]::NewGuid().ToString().ToUpper();
@@ -84,7 +91,6 @@ Function GenerateResourcesAndImage {
     $alreadyExists = $true;
     try {
         Get-AzureRmResourceGroup -Name $ResourceGroupName
-        $alreadyExists = $true
         Write-Verbose "Resource group was found, will delete and recreate it."
     }
     catch {
@@ -93,13 +99,46 @@ Function GenerateResourcesAndImage {
     }
 
     if ($alreadyExists) {
-        # Cleanup the resource group if it already exitsted before
-        Remove-AzureRmResourceGroup -Name $ResourceGroupName -Force
+        if($Force -eq $true) {
+            # Cleanup the resource group if it already exitsted before
+            Remove-AzureRmResourceGroup -Name $ResourceGroupName -Force
+            New-AzureRmResourceGroup -Name $ResourceGroupName -Location $AzureLocation
+        } else {
+            $title = "Delete Resource Group"
+            $message = "The resource group you specified already exists. Do you want to clean it up?"
+
+            $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
+                "Delete the resource group including all resources."
+
+            $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
+                "Keep the resource group and continue."
+
+            $stop = New-Object System.Management.Automation.Host.ChoiceDescription "&Stop", `
+                "Stop the current action."
+
+            $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no, $stop)
+            $result = $host.ui.PromptForChoice($title, $message, $options, 0)
+
+            switch ($result)
+            {
+                0 { Remove-AzureRmResourceGroup -Name $ResourceGroupName -Force; New-AzureRmResourceGroup -Name $ResourceGroupName -Location $AzureLocation }
+                1 { <# Do nothing #> }
+                2 { exit }
+            }
+        }
+    } else {
+        New-AzureRmResourceGroup -Name $ResourceGroupName -Location $AzureLocation
     }
 
-    New-AzureRmResourceGroup -Name $ResourceGroupName -Location $AzureLocation
+    # This script should follow the recommended naming conventions for azure resources
+    $storageAccountName = if($ResourceGroupName.EndsWith("-rg")) {
+        $ResourceGroupName.Substring(0, $ResourceGroupName.Length -3)
+    } else { $ResourceGroupName }
 
-    $storageAccountName = $ResourceGroupName
+    # Resource group names may contain special characters, that are not allowed in the storage account name
+    $storageAccountName = $storageAccountName.Replace("-", "").Replace("_", "").Replace("(", "").Replace(")", "")
+    $storageAccountName += "001"
+
     New-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName -AccountName $storageAccountName -Location $AzureLocation -SkuName "Standard_LRS"
 
     $spDisplayName = [System.GUID]::NewGuid().ToString().ToUpper()
@@ -108,9 +147,10 @@ Function GenerateResourcesAndImage {
     $spAppId = $sp.ApplicationId
     $spClientId = $sp.ApplicationId
     $spObjectId = $sp.Id
-    Sleep 60
+    Start-Sleep -Seconds $SecondsToWaitForServicePrincipalSetup
 
     New-AzureRmRoleAssignment -RoleDefinitionName Contributor -ServicePrincipalName $spAppId
+    Start-Sleep -Seconds $SecondsToWaitForServicePrincipalSetup
     $sub = Get-AzureRmSubscription -SubscriptionId $SubscriptionId
     $tenantId = $sub.TenantId
     # "", "Note this variable-setting script for running Packer with these Azure resources in the future:", "==============================================================================================", "`$spClientId = `"$spClientId`"", "`$ServicePrincipalClientSecret = `"$ServicePrincipalClientSecret`"", "`$SubscriptionId = `"$SubscriptionId`"", "`$tenantId = `"$tenantId`"", "`$spObjectId = `"$spObjectId`"", "`$AzureLocation = `"$AzureLocation`"", "`$ResourceGroupName = `"$ResourceGroupName`"", "`$storageAccountName = `"$storageAccountName`"", "`$install_password = `"$install_password`"", ""

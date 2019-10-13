@@ -27,6 +27,7 @@ rm -f android-sdk.zip
 echo "y" | ${ANDROID_ROOT}/tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} \
     "ndk-bundle" \
     "platform-tools" \
+    "platforms;android-29" \
     "platforms;android-28" \
     "platforms;android-27" \
     "platforms;android-26" \
@@ -37,8 +38,8 @@ echo "y" | ${ANDROID_ROOT}/tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} \
     "platforms;android-21" \
     "platforms;android-19" \
     "platforms;android-17" \
-    "platforms;android-15" \
-    "platforms;android-10" \
+    "build-tools;29.0.2" \
+    "build-tools;29.0.0" \
     "build-tools;28.0.3" \
     "build-tools;28.0.2" \
     "build-tools;28.0.1" \
@@ -70,10 +71,6 @@ echo "y" | ${ANDROID_ROOT}/tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} \
     "extras;android;m2repository" \
     "extras;google;m2repository" \
     "extras;google;google_play_services" \
-    "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2" \
-    "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1" \
-    "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
-    "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
     "add-ons;addon-google_apis-google-24" \
     "add-ons;addon-google_apis-google-23" \
     "add-ons;addon-google_apis-google-22" \
@@ -91,9 +88,8 @@ DocumentInstalledItem "Google APIs 22"
 DocumentInstalledItem "Google APIs 21"
 DocumentInstalledItem "CMake $(ls ${ANDROID_SDK_ROOT}/cmake 2>&1)"
 DocumentInstalledItem "Android Support Repository 47.0.0"
-DocumentInstalledItem "Android Solver for ConstraintLayout 1.0.2"
-DocumentInstalledItem "Android Solver for ConstraintLayout 1.0.1"
 DocumentInstalledItem "Android SDK Platform-Tools $(cat ${ANDROID_SDK_ROOT}/platform-tools/source.properties 2>&1 | grep Pkg.Revision | cut -d '=' -f 2)"
+DocumentInstalledItem "Android SDK Platform 29"
 DocumentInstalledItem "Android SDK Platform 28"
 DocumentInstalledItem "Android SDK Platform 27"
 DocumentInstalledItem "Android SDK Platform 26"
@@ -104,9 +100,9 @@ DocumentInstalledItem "Android SDK Platform 22"
 DocumentInstalledItem "Android SDK Platform 21"
 DocumentInstalledItem "Android SDK Platform 19"
 DocumentInstalledItem "Android SDK Platform 17"
-DocumentInstalledItem "Android SDK Platform 15"
-DocumentInstalledItem "Android SDK Platform 10"
 DocumentInstalledItem "Android SDK Patch Applier v4"
+DocumentInstalledItem "Android SDK Build-Tools 29.0.2"
+DocumentInstalledItem "Android SDK Build-Tools 29.0.0"
 DocumentInstalledItem "Android SDK Build-Tools 28.0.3"
 DocumentInstalledItem "Android SDK Build-Tools 28.0.2"
 DocumentInstalledItem "Android SDK Build-Tools 28.0.1"
@@ -136,5 +132,3 @@ DocumentInstalledItem "Android SDK Build-Tools 20.0.0"
 DocumentInstalledItem "Android SDK Build-Tools 19.1.0"
 DocumentInstalledItem "Android SDK Build-Tools 17.0.0"
 DocumentInstalledItem "Android NDK $(cat ${ANDROID_SDK_ROOT}/ndk-bundle/source.properties 2>&1 | grep Pkg.Revision | cut -d ' ' -f 3)"
-DocumentInstalledItem "Android ConstraintLayout 1.0.2"
-DocumentInstalledItem "Android ConstraintLayour 1.0.1"

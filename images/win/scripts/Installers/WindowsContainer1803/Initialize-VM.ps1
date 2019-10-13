@@ -96,7 +96,7 @@ wmic logicaldisk get size,freespace,caption
 $Content = @"
 # Azure Pipelines Windows Container 1803 image
 
-The following software is installed on machines in the Azure Pipelines **Windows Container 1803** pool.
+The following software is installed on machines in the Azure Pipelines **Windows Container 1803** (v$env:ImageVersion) pool.
 
 Components marked with **\*** have been upgraded since the previous version of the image.
 

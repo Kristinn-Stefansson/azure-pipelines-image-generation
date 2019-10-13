@@ -10,6 +10,8 @@ source $HELPER_SCRIPTS/document.sh
 
 DEFAULT_JDK_VERSION=8
 
+set -e
+
 # Install the Azul Systems Zulu JDKs
 # See https://www.azul.com/downloads/azure-only/zulu/
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9
@@ -32,11 +34,11 @@ apt-fast install -y --no-install-recommends ant ant-optional
 echo "ANT_HOME=/usr/share/ant" | tee -a /etc/environment
 
 # Install Maven
-curl -sL http://www-eu.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.zip -o maven.zip
+curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.zip -o maven.zip
 unzip -d /usr/share maven.zip
 rm maven.zip
-ln -s /usr/share/apache-maven-3.6.0/bin/mvn /usr/bin/mvn
-echo "M2_HOME=/usr/share/apache-maven-3.6.0" | tee -a /etc/environment
+ln -s /usr/share/apache-maven-3.6.1/bin/mvn /usr/bin/mvn
+echo "M2_HOME=/usr/share/apache-maven-3.6.1" | tee -a /etc/environment
 
 # Install Gradle
 # This script downloads the latest HTML list of releases at https://gradle.org/releases/.

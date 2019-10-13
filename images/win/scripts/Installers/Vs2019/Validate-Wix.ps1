@@ -25,7 +25,7 @@ function Get-WixExtensionPackage {
 
     $stateContent = Get-Content -Path ($instanceFolders.FullName + '\state.packages.json')
     $state = $stateContent | ConvertFrom-Json
-    $WixPackage = $state.packages | where { $_.id -eq "WixToolset.VisualStudioExtension.Dev15" }
+    $WixPackage = $state.packages | where { $_.id -eq "WixToolset.VisualStudioExtension.Dev16" }
     return $WixPackage
 }
 
@@ -39,7 +39,6 @@ else {
     exit 1
 }
 
-<# Extension not available for VS2019 yet
 $WixPackage = Get-WixExtensionPackage
 
 if($WixPackage) {
@@ -49,13 +48,13 @@ else {
     Write-Host "Wix Extension is not installed"
     exit 1
 }
-#>
 
 # Adding description of the software to Markdown
 $SoftwareName = "WIX Tools"
 
 $Description = @"
 _Toolset Version:_ $WixToolSetVersion<br/>
+_WIX Toolset Visual Studio Extension Version:_ $($WixPackage.version)<br/>
 _Environment:_
 * WIX: Installation root of WIX
 "@
